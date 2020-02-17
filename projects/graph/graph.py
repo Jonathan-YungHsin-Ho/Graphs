@@ -98,9 +98,8 @@ class Graph:
             if current_node not in visited:
                 visited.add(current_node)
                 for neighbor in self.get_neighbors(current_node):
-                    path_copy = path_of_current_node.copy()
-                    path_copy.append(neighbor)
-                    queue.enqueue(path_copy)
+                    path_of_neighbor = path_of_current_node + [neighbor]
+                    queue.enqueue(path_of_neighbor)
         print('Vertex not found')
         return None
 
@@ -121,9 +120,8 @@ class Graph:
             if current_node not in visited:
                 visited.add(current_node)
                 for neighbor in self.get_neighbors(current_node):
-                    path_to_neighbor = path_of_current_node.copy()
-                    path_to_neighbor.append(neighbor)
-                    stack.push(path_to_neighbor)
+                    path_of_neighbor = path_of_current_node + [neighbor]
+                    stack.push(path_of_neighbor)
         print('Vertex not found')
         return None
 
@@ -136,18 +134,17 @@ class Graph:
         This should be done using recursion.
         """
         visited = visited or set()
-        path = path or [starting_vertex]
+        path_of_current_node = path or [starting_vertex]
         final_path = None
-        current_node = path[-1]
+        current_node = path_of_current_node[-1]
         if current_node == destination_vertex:
-            return path
+            return path_of_current_node
         if current_node not in visited:
             visited.add(current_node)
             for neighbor in self.get_neighbors(current_node):
-                path_to_neighbor = path.copy()
-                path_to_neighbor.append(neighbor)
+                path_of_neighbor = path_of_current_node + [neighbor]
                 final_path = self.dfs_recursive(
-                    neighbor, destination_vertex, path_to_neighbor, visited)
+                    neighbor, destination_vertex, path_of_neighbor, visited)
         return final_path
 
 
@@ -209,13 +206,12 @@ if __name__ == '__main__':
     Valid BFS path:
         [1, 2, 4, 6]
     '''
-    # print(graph.bfs(1, 6))
+    print(graph.bfs(1, 6))
 
     '''
     Valid DFS paths:
         [1, 2, 4, 6]
         [1, 2, 4, 7, 6]
     '''
-    # print(graph.dfs(1, 6))
+    print(graph.dfs(1, 6))
     print(graph.dfs_recursive(1, 6))
-    print(graph.dfs_recursive(1, 9))
