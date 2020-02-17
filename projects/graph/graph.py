@@ -124,7 +124,7 @@ class Graph:
         print('Vertex not found')
         return None
 
-    def dfs_recursive(self, starting_vertex, destination_vertex, path=None, visited=set()):
+    def dfs_recursive(self, starting_vertex, destination_vertex, path=[], visited=set()):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
