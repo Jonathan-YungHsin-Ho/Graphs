@@ -97,7 +97,7 @@ class Graph:
             if current_node not in visited:
                 visited.add(current_node)
                 for neighbor in self.get_neighbors(current_node):
-                    path_of_neighbor = path_of_current_node + [neighbor]
+                    path_of_neighbor = [*path_of_current_node, neighbor]
                     queue.enqueue(path_of_neighbor)
         print('Vertex not found')
         return None
@@ -119,7 +119,7 @@ class Graph:
             if current_node not in visited:
                 visited.add(current_node)
                 for neighbor in self.get_neighbors(current_node):
-                    path_of_neighbor = path_of_current_node + [neighbor]
+                    path_of_neighbor = [*path_of_current_node, neighbor]
                     stack.push(path_of_neighbor)
         print('Vertex not found')
         return None
@@ -140,7 +140,7 @@ class Graph:
         if current_node not in visited:
             visited.add(current_node)
             for neighbor in self.get_neighbors(current_node):
-                path_of_neighbor = path_of_current_node + [neighbor]
+                path_of_neighbor = [*path_of_current_node, neighbor]
                 final_path = self.dfs_recursive(
                     neighbor, destination_vertex, path_of_neighbor, visited)
         return final_path
