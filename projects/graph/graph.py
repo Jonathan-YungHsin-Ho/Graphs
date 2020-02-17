@@ -42,12 +42,9 @@ class Graph:
         """
         queue = Queue()
         queue.enqueue(starting_vertex)
-
         visited = set()
-
         while queue.size() > 0:
             current_node = queue.dequeue()
-
             if current_node not in visited:
                 print(current_node)
                 visited.add(current_node)
@@ -61,12 +58,9 @@ class Graph:
         """
         stack = Stack()
         stack.push(starting_vertex)
-
         visited = set()
-
         while stack.size() > 0:
             current_node = stack.pop()
-
             if current_node not in visited:
                 print(current_node)
                 visited.add(current_node)
@@ -81,7 +75,6 @@ class Graph:
         This should be done using recursion.
         """
         visited = visited or set()
-
         if starting_vertex not in visited:
             visited.add(starting_vertex)
             print(starting_vertex)
@@ -96,23 +89,18 @@ class Graph:
         """
         queue = Queue()
         queue.enqueue([starting_vertex])
-
         visited = set()
-
         while queue.size() > 0:
             path_of_current_node = queue.dequeue()
             current_node = path_of_current_node[-1]
-
             if current_node == destination_vertex:
                 return path_of_current_node
-
             if current_node not in visited:
                 visited.add(current_node)
                 for neighbor in self.get_neighbors(current_node):
                     path_copy = path_of_current_node.copy()
                     path_copy.append(neighbor)
                     queue.enqueue(path_copy)
-
         print('Vertex not found')
         return None
 
@@ -122,7 +110,22 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        pass  # TODO
+        stack = Stack()
+        stack.push([starting_vertex])
+        visited = set()
+        while stack.size() > 0:
+            path_of_current_node = stack.pop()
+            current_node = path_of_current_node[-1]
+            if current_node == destination_vertex:
+                return path_of_current_node
+            if current_node not in visited:
+                visited.add(current_node)
+                for neighbor in self.get_neighbors(current_node):
+                    path_copy = path_of_current_node.copy()
+                    path_copy.append(neighbor)
+                    stack.push(path_copy)
+        print('Vertex not found')
+        return None
 
     def dfs_recursive(self, starting_vertex, destination_vertex):
         """
@@ -193,12 +196,12 @@ if __name__ == '__main__':
     Valid BFS path:
         [1, 2, 4, 6]
     '''
-    print(graph.bfs(1, 6))
+    # print(graph.bfs(1, 6))
 
     '''
     Valid DFS paths:
         [1, 2, 4, 6]
         [1, 2, 4, 7, 6]
     '''
-    # print(graph.dfs(1, 6))
+    print(graph.dfs(1, 6))
     # print(graph.dfs_recursive(1, 6))
