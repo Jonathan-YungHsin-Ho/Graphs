@@ -51,8 +51,8 @@ class Graph:
 
 def earliest_ancestor(ancestors, starting_node):
     graph = Graph()
-    for ancestor in ancestors:
-        graph.add_edge(ancestor[1], ancestor[0])
+    for pair in ancestors:
+        graph.add_edge(pair[1], pair[0])
     paths = graph.bft(starting_node)
 
     longest_path = []
