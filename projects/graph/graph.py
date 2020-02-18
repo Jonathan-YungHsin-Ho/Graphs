@@ -133,7 +133,6 @@ class Graph:
         """
         path_to_current_node = path or [starting_vertex]
         visited = visited or set()
-        final_path = None
         current_node = path_to_current_node[-1]
         if current_node == destination_vertex:
             return path_to_current_node
@@ -141,9 +140,10 @@ class Graph:
             visited.add(current_node)
             for neighbor in self.get_neighbors(current_node):
                 path_to_neighbor = [*path_to_current_node, neighbor]
-                final_path = self.dfs_recursive(
+                updated_path = self.dfs_recursive(
                     neighbor, destination_vertex, path_to_neighbor, visited)
-        return final_path
+                if updated_path:
+                    return updated_path
 
 
 if __name__ == '__main__':
