@@ -90,15 +90,15 @@ class Graph:
         queue.enqueue([starting_vertex])
         visited = set()
         while queue.size() > 0:
-            path_of_current_node = queue.dequeue()
-            current_node = path_of_current_node[-1]
+            path_to_current_node = queue.dequeue()
+            current_node = path_to_current_node[-1]
             if current_node == destination_vertex:
-                return path_of_current_node
+                return path_to_current_node
             if current_node not in visited:
                 visited.add(current_node)
                 for neighbor in self.get_neighbors(current_node):
-                    path_of_neighbor = [*path_of_current_node, neighbor]
-                    queue.enqueue(path_of_neighbor)
+                    path_to_neighbor = [*path_to_current_node, neighbor]
+                    queue.enqueue(path_to_neighbor)
         print('Vertex not found')
         return None
 
@@ -112,15 +112,15 @@ class Graph:
         stack.push([starting_vertex])
         visited = set()
         while stack.size() > 0:
-            path_of_current_node = stack.pop()
-            current_node = path_of_current_node[-1]
+            path_to_current_node = stack.pop()
+            current_node = path_to_current_node[-1]
             if current_node == destination_vertex:
-                return path_of_current_node
+                return path_to_current_node
             if current_node not in visited:
                 visited.add(current_node)
                 for neighbor in self.get_neighbors(current_node):
-                    path_of_neighbor = [*path_of_current_node, neighbor]
-                    stack.push(path_of_neighbor)
+                    path_to_neighbor = [*path_to_current_node, neighbor]
+                    stack.push(path_to_neighbor)
         print('Vertex not found')
         return None
 
@@ -132,17 +132,17 @@ class Graph:
 
         This should be done using recursion.
         """
-        path_of_current_node = path or [starting_vertex]
+        path_to_current_node = path or [starting_vertex]
         final_path = None
-        current_node = path_of_current_node[-1]
+        current_node = path_to_current_node[-1]
         if current_node == destination_vertex:
-            return path_of_current_node
+            return path_to_current_node
         if current_node not in visited:
             visited.add(current_node)
             for neighbor in self.get_neighbors(current_node):
-                path_of_neighbor = [*path_of_current_node, neighbor]
+                path_to_neighbor = [*path_to_current_node, neighbor]
                 final_path = self.dfs_recursive(
-                    neighbor, destination_vertex, path_of_neighbor, visited)
+                    neighbor, destination_vertex, path_to_neighbor, visited)
         return final_path
 
 
