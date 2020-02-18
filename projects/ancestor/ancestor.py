@@ -31,33 +31,30 @@ class Graph:
     def get_ancestor(self, vertex_id):
         return self.vertices[vertex_id]
 
-    def bft(self, starting_vertex):
+    def bfs(self, starting_vertex):
         queue = Queue()
         queue.enqueue([starting_vertex])
-        visited = set()
-        paths = []
+        longest_path_length = 1
+        earliest_ancestor = -1
+
         while queue.size() > 0:
             path_to_current_node = queue.dequeue()
             current_node = path_to_current_node[-1]
-            if not self.get_ancestor(current_node):
-                paths.append(path_to_current_node)
-            if current_node not in visited:
-                visited.add(current_node)
-                for ancestor in self.get_ancestor(current_node):
-                    path_to_ancestor = [*path_to_current_node, ancestor]
-                    queue.enqueue(path_to_ancestor)
-        return paths
+
+            if len(path_to_current_node) > longest_path_length or \
+                    ((len(path_to_current_node) == longest_path_length and current_node < earliest_ancestor)):
+                longest_path_length = len(path_to_current_node)
+                earliest_ancestor = current_node
+
+            for ancestor in self.get_ancestor(current_node):
+                path_to_ancestor = [*path_to_current_node, ancestor]
+                queue.enqueue(path_to_ancestor)
+
+        return earliest_ancestor
 
 
 def earliest_ancestor(ancestors, starting_node):
     graph = Graph()
     for pair in ancestors:
         graph.add_edge(pair[1], pair[0])
-    paths = graph.bft(starting_node)
-
-    longest_path = []
-    for path in paths:
-        if len(path) > len(longest_path) or \
-                (len(path) == len(longest_path) and path[-1] < longest_path[-1]):
-            longest_path = path
-    return -1 if len(longest_path) == 1 else longest_path[-1]
+    return graph.bfs(starting_node)
