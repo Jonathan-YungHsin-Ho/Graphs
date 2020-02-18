@@ -24,10 +24,8 @@ class Graph:
             self.vertices[vertex_id] = set()
 
     def add_edge(self, v1, v2):
-        if v1 not in self.vertices:
-            self.add_vertex(v1)
-        if v2 not in self.vertices:
-            self.add_vertex(v2)
+        self.add_vertex(v1)
+        self.add_vertex(v2)
         self.vertices[v1].add(v2)
 
     def get_ancestor(self, vertex_id):
