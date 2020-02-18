@@ -100,7 +100,6 @@ class Graph:
                     path_to_neighbor = [*path_to_current_node, neighbor]
                     queue.enqueue(path_to_neighbor)
         print('Vertex not found')
-        return None
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -122,7 +121,6 @@ class Graph:
                     path_to_neighbor = [*path_to_current_node, neighbor]
                     stack.push(path_to_neighbor)
         print('Vertex not found')
-        return None
 
     def dfs_recursive(self, starting_vertex, destination_vertex, path=[], visited=set()):
         """
