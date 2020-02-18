@@ -48,7 +48,6 @@ class Graph:
                 for ancestor in self.get_ancestor(current_node):
                     path_to_ancestor = [*path_to_current_node, ancestor]
                     queue.enqueue(path_to_ancestor)
-        # print(paths)
         return paths
 
 
@@ -56,43 +55,11 @@ def earliest_ancestor(ancestors, starting_node):
     graph = Graph()
     for ancestor in ancestors:
         graph.add_edge(ancestor[1], ancestor[0])
-    # print(graph.vertices)
     paths = graph.bft(starting_node)
+
     longest_path = []
     for path in paths:
-        if len(path) > len(longest_path):
+        if len(path) > len(longest_path) or \
+                (len(path) == len(longest_path) and path[-1] < longest_path[-1]):
             longest_path = path
-        elif len(path) == len(longest_path):
-            if path[-1] < longest_path[-1]:
-                longest_path = path
-    # print(longest_path)
-    if len(longest_path) == 1:
-        return -1
-    else:
-        return longest_path[-1]
-
-
-# We want to create a graph where each node can have two parents and two children
-# directed, acyclic graph
-
-# Loop through each tuple in array to build graph
-# # create node for 1st tuple, create node for 2nd tuple
-# # build edge from child to ancestor
-
-# Once the graph is built, traverse to find all paths
-# Once paths are found, find longest path, return the value at end of path
-
-test_ancestors = [(1, 3), (2, 3), (3, 6), (5, 6), (5, 7),
-                  (4, 5), (4, 8), (8, 9), (11, 8), (10, 1)]
-
-print(earliest_ancestor(test_ancestors, 1))
-print(earliest_ancestor(test_ancestors, 2))
-print(earliest_ancestor(test_ancestors, 3))
-print(earliest_ancestor(test_ancestors, 4))
-print(earliest_ancestor(test_ancestors, 5))
-print(earliest_ancestor(test_ancestors, 6))
-print(earliest_ancestor(test_ancestors, 7))
-print(earliest_ancestor(test_ancestors, 8))
-print(earliest_ancestor(test_ancestors, 9))
-print(earliest_ancestor(test_ancestors, 10))
-print(earliest_ancestor(test_ancestors, 11))
+    return -1 if len(longest_path) == 1 else longest_path[-1]
