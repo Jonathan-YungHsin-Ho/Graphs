@@ -85,21 +85,6 @@ class SocialGraph:
         for friendship in random_friendships:
             self.add_friendship(friendship[0], friendship[1])
 
-    def get_social_path(self, starting_user, target_user):
-        queue = Queue()
-        queue.enqueue([starting_user])
-        visited = set()
-        while queue.size() > 0:
-            path_to_current_user = queue.dequeue()
-            current_user = path_to_current_user[-1]
-            if current_user == target_user:
-                return path_to_current_user
-            if current_user not in visited:
-                visited.add(current_user)
-                for friend in self.friendships[current_user]:
-                    path_to_friend = [*path_to_current_user, friend]
-                    queue.enqueue(path_to_friend)
-
     def get_all_social_paths(self, user_id):
         """
         Takes a user's user_id as an argument
@@ -111,15 +96,17 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         queue = Queue()
-        queue.enqueue(user_id)
+        queue.enqueue([user_id])
 
         while queue.size() > 0:
-            current_user = queue.dequeue()
+            path_to_current_user = queue.dequeue()
+            current_user = path_to_current_user[-1]
             if current_user not in visited:
-                shortest_path = self.get_social_path(user_id, current_user)
-                visited[current_user] = shortest_path
+                visited[current_user] = path_to_current_user
                 for friend in self.friendships[current_user]:
-                    queue.enqueue(friend)
+                    path_to_friend = [*path_to_current_user, friend]
+                    queue.enqueue(path_to_friend)
+
         return visited
 
 
