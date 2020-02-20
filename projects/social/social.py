@@ -1,5 +1,7 @@
 import random
 
+import itertools
+
 
 class Queue():
     def __init__(self):
@@ -71,19 +73,22 @@ class SocialGraph:
         for i in range(num_users):
             self.add_user(f'User {i + 1}')
 
-        # Create friendships
-        possible_friendships = []
-        for user_id in self.users:
-            for friend_id in range(user_id + 1, self.last_id + 1):
-                possible_friendships.append((user_id, friend_id))
+        # # Create friendships
+        # possible_friendships = []
+        # for user_id in self.users:
+        #     for friend_id in range(user_id + 1, self.last_id + 1):
+        #         possible_friendships.append((user_id, friend_id))
 
-        random.shuffle(possible_friendships)
+        # random.shuffle(possible_friendships)
 
         total_friendships = num_users * avg_friendships // 2
-        random_friendships = possible_friendships[:total_friendships]
+        # random_friendships = possible_friendships[:total_friendships]
 
-        for friendship in random_friendships:
-            self.add_friendship(friendship[0], friendship[1])
+        for i in range(total_friendships):
+            user_a = random.randint(1, num_users)
+            user_b = random.randint(1, num_users)
+            if user_a != user_b and user_a not in self.friendships[user_b] and user_b not in self.friendships[user_a]:
+                self.add_friendship(user_a, user_b)
 
     def get_all_social_paths(self, user_id):
         """
@@ -114,8 +119,8 @@ class SocialGraph:
         users_in_network = len(extended_network) - 1
         other_users = len(self.users) - 1
         percent_in_network = 100 * users_in_network / other_users
-        # print('Network Count:', users_in_network)
-        # print('Number of Other Users:', other_users)
+        print('Extended Network:', users_in_network)
+        print('Number of Other Users:', other_users)
         print('Percentage of Other Users in Network:', percent_in_network)
 
     def average_degree_of_separation(self, user_id):
