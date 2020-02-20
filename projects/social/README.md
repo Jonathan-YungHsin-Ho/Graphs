@@ -62,3 +62,5 @@ Note that in this sample, Users 3, 4 and 9 are not in User 1's extended social n
 > It was a little surprising that pretty much all the users are connected, but that makes sense given the random distribution of friends. In real life, I imagine that there may be more connected components. For more realistic results, I would change the friendship distribution model so that each user had more friends, but the friendships would be more clustered rather just randomly generated.
 
 2. If you followed the hints for part 1, your `populate_graph()` will run in O(n^2) time. Refactor your code to run in O(n) time. Are there any tradeoffs that come with this implementation?
+
+> The tradeoff that comes with this implementation is that for very high values of average friendships relative to the user base, the O(n^2) time complexity algorithm starts to outperform the O(n) time complexity algorithm because it will take more iterations to run the `add_friendship` method in the linear algorithm without encountering already existing friendships.
