@@ -1,7 +1,5 @@
 import random
 
-import itertools
-
 
 class Queue():
     def __init__(self):
@@ -130,7 +128,8 @@ class SocialGraph:
         for (key, value) in extended_network.items():
             if key != user_id:
                 total_degrees_of_separation += len(value) - 1
-        return total_degrees_of_separation / users_in_network
+        print('Average Degree of Separation:',
+              total_degrees_of_separation / users_in_network)
 
 
 if __name__ == '__main__':
@@ -140,4 +139,4 @@ if __name__ == '__main__':
     connections = sg.get_all_social_paths(1)
     # print(connections)
     sg.friends_info(1)
-    print(sg.average_degree_of_separation(1))
+    sg.average_degree_of_separation(1)
