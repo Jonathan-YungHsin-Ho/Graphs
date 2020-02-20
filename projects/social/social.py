@@ -72,15 +72,28 @@ class SocialGraph:
             self.add_user(f'User {i + 1}')
 
         # # Create friendships
-        # possible_friendships = []
-        # for user_id in self.users:
-        #     for friend_id in range(user_id + 1, self.last_id + 1):
-        #         possible_friendships.append((user_id, friend_id))
+        possible_friendships = []
+        for user_id in self.users:
+            for friend_id in range(user_id + 1, self.last_id + 1):
+                possible_friendships.append((user_id, friend_id))
 
-        # random.shuffle(possible_friendships)
+        random.shuffle(possible_friendships)
 
         total_friendships = num_users * avg_friendships // 2
-        # random_friendships = possible_friendships[:total_friendships]
+        random_friendships = possible_friendships[:total_friendships]
+
+        for friendship in random_friendships:
+            self.add_friendship(friendship[0], friendship[1])
+
+    def populate_graph_linear(self, num_users, avg_friendships):
+        self.last_id = 0
+        self.users = {}
+        self.friendships = {}
+
+        for i in range(num_users):
+            self.add_user(f'User {i + 1}')
+
+        total_friendships = num_users * avg_friendships // 2
 
         for i in range(total_friendships):
             user_a = random.randint(1, num_users)
@@ -134,7 +147,7 @@ class SocialGraph:
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populate_graph(1000, 5)
+    sg.populate_graph_linear(1000, 5)
     # print(sg.friendships)
     connections = sg.get_all_social_paths(1)
     # print(connections)
