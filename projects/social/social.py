@@ -109,10 +109,30 @@ class SocialGraph:
 
         return visited
 
+    def friends_info(self, user_id):
+        extended_network = self.get_all_social_paths(user_id)
+        users_in_network = len(extended_network) - 1
+        other_users = len(self.users) - 1
+        percent_in_network = 100 * users_in_network / other_users
+        # print('Network Count:', users_in_network)
+        # print('Number of Other Users:', other_users)
+        print('Percentage of Other Users in Network:', percent_in_network)
+
+    def average_degree_of_separation(self, user_id):
+        extended_network = self.get_all_social_paths(user_id)
+        total_degrees_of_separation = 0
+        users_in_network = len(extended_network) - 1
+        for (key, value) in extended_network.items():
+            if key != user_id:
+                total_degrees_of_separation += len(value) - 1
+        return total_degrees_of_separation / users_in_network
+
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populate_graph(10, 2)
-    print(sg.friendships)
+    sg.populate_graph(1000, 5)
+    # print(sg.friendships)
     connections = sg.get_all_social_paths(1)
-    print(connections)
+    # print(connections)
+    sg.friends_info(1)
+    print(sg.average_degree_of_separation(1))
