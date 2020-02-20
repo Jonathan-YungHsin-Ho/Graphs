@@ -82,7 +82,9 @@ class SocialGraph:
         total_friendships = num_users * avg_friendships // 2
         random_friendships = possible_friendships[:total_friendships]
 
+        counter = 0
         for friendship in random_friendships:
+            counter += 1
             self.add_friendship(friendship[0], friendship[1])
 
     def populate_graph_linear(self, num_users, avg_friendships):
@@ -94,11 +96,12 @@ class SocialGraph:
             self.add_user(f'User {i + 1}')
 
         total_friendships = num_users * avg_friendships // 2
-
-        for i in range(total_friendships):
+        friendships_added = 0
+        while friendships_added < total_friendships:
             user_a = random.randint(1, num_users)
             user_b = random.randint(1, num_users)
             if user_a != user_b and user_a not in self.friendships[user_b] and user_b not in self.friendships[user_a]:
+                friendships_added += 1
                 self.add_friendship(user_a, user_b)
 
     def get_all_social_paths(self, user_id):
