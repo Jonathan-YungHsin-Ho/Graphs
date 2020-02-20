@@ -37,12 +37,15 @@ class SocialGraph:
         Creates a bi-directional friendship
         """
         if user_id == friend_id:
-            print("WARNING: You cannot be friends with yourself")
+            # print("WARNING: You cannot be friends with yourself")
+            return False
         elif friend_id in self.friendships[user_id] or user_id in self.friendships[friend_id]:
-            print("WARNING: Friendship already exists")
+            # print("WARNING: Friendship already exists")
+            return False
         else:
             self.friendships[user_id].add(friend_id)
             self.friendships[friend_id].add(user_id)
+            return True
 
     def add_user(self, name):
         """
@@ -97,12 +100,12 @@ class SocialGraph:
 
         total_friendships = num_users * avg_friendships // 2
         friendships_added = 0
+
         while friendships_added < total_friendships:
             user_a = random.randint(1, num_users)
             user_b = random.randint(1, num_users)
-            if user_a != user_b and user_a not in self.friendships[user_b] and user_b not in self.friendships[user_a]:
+            if self.add_friendship(user_a, user_b):
                 friendships_added += 1
-                self.add_friendship(user_a, user_b)
 
     def get_all_social_paths(self, user_id):
         """
@@ -150,8 +153,8 @@ class SocialGraph:
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populate_graph_linear(1000, 5)
-    # print(sg.friendships)
+    sg.populate_graph_linear(10, 2)
+    print(sg.friendships)
     connections = sg.get_all_social_paths(1)
     # print(connections)
     sg.friends_info(1)
