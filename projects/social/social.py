@@ -1,6 +1,30 @@
+import random
+
+
+class Queue():
+    def __init__(self):
+        self.queue = []
+
+    def enqueue(self, value):
+        self.queue.append(value)
+
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+
+    def size(self):
+        return len(self.queue)
+
+
 class User:
     def __init__(self, name):
         self.name = name
+
+    def __repr__(self):
+        return self.name
+
 
 class SocialGraph:
     def __init__(self):
@@ -13,12 +37,15 @@ class SocialGraph:
         Creates a bi-directional friendship
         """
         if user_id == friend_id:
-            print("WARNING: You cannot be friends with yourself")
+            # print("WARNING: You cannot be friends with yourself")
+            return False
         elif friend_id in self.friendships[user_id] or user_id in self.friendships[friend_id]:
-            print("WARNING: Friendship already exists")
+            # print("WARNING: Friendship already exists")
+            return False
         else:
             self.friendships[user_id].add(friend_id)
             self.friendships[friend_id].add(user_id)
+            return True
 
     def add_user(self, name):
         """
@@ -42,11 +69,43 @@ class SocialGraph:
         self.last_id = 0
         self.users = {}
         self.friendships = {}
-        # !!!! IMPLEMENT ME
 
         # Add users
+        for i in range(num_users):
+            self.add_user(f'User {i + 1}')
 
-        # Create friendships
+        # # Create friendships
+        possible_friendships = []
+        for user_id in self.users:
+            for friend_id in range(user_id + 1, self.last_id + 1):
+                possible_friendships.append((user_id, friend_id))
+
+        random.shuffle(possible_friendships)
+
+        total_friendships = num_users * avg_friendships // 2
+        random_friendships = possible_friendships[:total_friendships]
+
+        counter = 0
+        for friendship in random_friendships:
+            counter += 1
+            self.add_friendship(friendship[0], friendship[1])
+
+    def populate_graph_linear(self, num_users, avg_friendships):
+        self.last_id = 0
+        self.users = {}
+        self.friendships = {}
+
+        for i in range(num_users):
+            self.add_user(f'User {i + 1}')
+
+        total_friendships = num_users * avg_friendships // 2
+        friendships_added = 0
+
+        while friendships_added < total_friendships:
+            user_a = random.randint(1, num_users)
+            user_b = random.randint(1, num_users)
+            if self.add_friendship(user_a, user_b):
+                friendships_added += 1
 
     def get_all_social_paths(self, user_id):
         """
@@ -58,13 +117,45 @@ class SocialGraph:
         The key is the friend's ID and the value is the path.
         """
         visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME
+        queue = Queue()
+        queue.enqueue([user_id])
+
+        while queue.size() > 0:
+            path_to_current_user = queue.dequeue()
+            current_user = path_to_current_user[-1]
+            if current_user not in visited:
+                visited[current_user] = path_to_current_user
+                for friend in self.friendships[current_user]:
+                    path_to_friend = [*path_to_current_user, friend]
+                    queue.enqueue(path_to_friend)
+
         return visited
+
+    def friends_info(self, user_id):
+        extended_network = self.get_all_social_paths(user_id)
+        users_in_network = len(extended_network) - 1
+        other_users = len(self.users) - 1
+        percent_in_network = 100 * users_in_network / other_users
+        print('Extended Network:', users_in_network)
+        print('Number of Other Users:', other_users)
+        print('Percentage of Other Users in Network:', percent_in_network)
+
+    def average_degree_of_separation(self, user_id):
+        extended_network = self.get_all_social_paths(user_id)
+        total_degrees_of_separation = 0
+        users_in_network = len(extended_network) - 1
+        for (key, value) in extended_network.items():
+            if key != user_id:
+                total_degrees_of_separation += len(value) - 1
+        print('Average Degree of Separation:',
+              total_degrees_of_separation / users_in_network)
 
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populate_graph(10, 2)
+    sg.populate_graph_linear(10, 2)
     print(sg.friendships)
     connections = sg.get_all_social_paths(1)
-    print(connections)
+    # print(connections)
+    sg.friends_info(1)
+    sg.average_degree_of_separation(1)
